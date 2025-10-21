@@ -32,3 +32,42 @@ jobs:
       - name: Build and test with Maven
         working-directory: backend/simpleapi # Répertoire où se trouve le pom.xml
         run: mvn clean verify   # Nettoie, compile et lance les tests
+
+  # ==============================
+# 🐳 Job : build-and-push-docker-image
+# Objectif : construire les images Docker (backend, database, httpd)
+# ==============================
+
+build-and-push-docker-image:
+  needs: test-backend   # ce job ne démarre que si les tests passent
+  runs-on: ubuntu-24.04 # machine virtuelle Ubuntu pour exécuter Docker
+
+  steps:
+    # 1️⃣ Récupérer le code du dépôt
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2️⃣ Construire l'image Docker du backend
+    - name: Build image and push backend
+      uses: docker/build-push-action@v6
+      with:
+        context: backend            # chemin où se trouve le Dockerfile du backend
+        push: false                         # pour l'instant, on ne pousse pas sur Docker Hub
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api-backend:latest
+
+    # 3️⃣ Construire l'image Docker de la base de données
+    - name: Build image and push database
+      uses: docker/build-push-action@v6
+      with:
+        context: .           # chemin vers ton Dockerfile de la base de données
+        push: false
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api-database:latest
+
+    # 4️⃣ Construire l'image Docker du serveur HTTP
+    - name: Build image and push httpd
+      uses: docker/build-push-action@v6
+      with:
+        context: httpd-server       # chemin vers ton Dockerfile du HTTP server
+        push: false
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api-httpd:latest
+
