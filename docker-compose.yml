@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+
+  database:
+    build:
+      context: . # Chemin vers le Dockerfile de la DB
+      dockerfile: Dockerfile  
+    container_name: postgres-db
+    environment:    # Variables d'environnement pour configurer la DB
+      - POSTGRES_DB=db
+      - POSTGRES_USER=usr
+      - POSTGRES_PASSWORD=pwd
+    volumes:    # Permet de persister les données et scripts initiau
+      - ./init-sql:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+    networks:   # Le conteneur est sur le réseau interne app-network
+      - app-network
+
+  backend:
+    build:
+      context: ./backend    # Chemin vers le Dockerfile du backend
+      dockerfile: Dockerfile
+    container_name: backend-api
+    depends_on:   # Démarre la DB avant le backend
+      - database
+    environment:    # Variables pour configurer l'accès à la DB
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/db
+      - SPRING_DATASOURCE_USERNAME=usr
+      - SPRING_DATASOURCE_PASSWORD=pwd
+    networks:
+      - app-network
+
+  httpd:
+    build: ./http-server   # ici on pointe sur ton dossier http-server
+    ports:
+      - "80:80"   # Expose le port 80 du conteneur sur le 80 de la machine
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+networks:
+  app-network:
+
+volumes:
+  pgdata:
