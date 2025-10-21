@@ -28,4 +28,5 @@ jobs:
 
       # 3️⃣ Build et test avec Maven
       - name: Build and test with Maven
-        run: mvn -f backend/simpleapi/pom.xml clean verify
+        working-directory: backend/simpleapi
+        run: mvn clean verify
