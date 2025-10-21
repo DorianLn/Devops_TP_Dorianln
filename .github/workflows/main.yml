@@ -67,7 +67,7 @@ jobs:
       - name: Build image and push httpd
         uses: docker/build-push-action@v6
         with:
-          context: httpd-server       # chemin vers ton Dockerfile du HTTP server
+          context: http-server       # chemin vers ton Dockerfile du HTTP server
           push: false
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api-httpd:latest
 
