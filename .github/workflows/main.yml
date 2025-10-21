@@ -1,9 +1,10 @@
 name: CI devops 2025
 
+ #  Déclenchement du workflow à chaque push ou pull request sur main et develop
 on:
   push:
     branches:
-      - main        # tu peux ajouter 'develop' si nécessaire
+      - main    # tu peux ajouter 'develop' si nécessaire
       - develop
   pull_request:
     branches:
@@ -11,8 +12,9 @@ on:
       - develop
 
 jobs:
+# Ce job s’exécute sur Ubuntu et teste l’application Java avec Maven
   test-backend:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04 # Environnement d'exécution (VM Linux)
 
     steps:
       # 1️⃣ Récupérer le code depuis GitHub
@@ -28,5 +30,5 @@ jobs:
 
       # 3️⃣ Build et test avec Maven
       - name: Build and test with Maven
-        working-directory: backend/simpleapi
-        run: mvn clean verify
+        working-directory: backend/simpleapi # Répertoire où se trouve le pom.xml
+        run: mvn clean verify   # Nettoie, compile et lance les tests
