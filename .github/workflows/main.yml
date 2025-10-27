@@ -33,6 +33,21 @@ jobs:
         working-directory: backend/simpleapi # Répertoire où se trouve le pom.xml
         run: mvn clean verify   # Nettoie, compile et lance les tests
       
+      # ----------------------------------------------------------
+      # Analyse de qualité SonarCloud (Quality Gate)
+      # ----------------------------------------------------------
+      # Cette étape exécute une analyse automatique de la qualité du code
+      # à l’aide de SonarCloud. Elle permet de vérifier plusieurs indicateurs clés :
+      #  - Vulnérabilités de sécurité (Note : A)
+      #  - Fiabilité du code (Note : A)
+      #  - Maintenabilité (Note : A)
+      #  - Couverture de tests (92,1 %)
+      #  - Duplication de code (0 %)
+      #
+      # Le Quality Gate garantit que le code respecte les standards de qualité
+      # avant d’être livré ou déployé. Si un critère échoue, le pipeline peut
+      # signaler un échec afin d’empêcher la livraison d’un code non conforme.
+      # ----------------------------------------------------------
       - name: Analyze with SonarCloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
