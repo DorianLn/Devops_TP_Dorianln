@@ -1,0 +1,21 @@
+- name: Copy SQL init files
+  copy:
+    src: /mnt/d/5a/devops/docker.labs/beginner/TP1/init-sql/
+    dest: /opt/initdb/
+    mode: '0644'
+
+- name: Launch Postgres container
+  docker_container:
+    name: tp1_postgres
+    image: dorianln/tp-devops-simple-api-database:latest  
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: app-network
+    env:
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: db
+    volumes:
+      - /opt/postgres_data:/var/lib/postgresql/data
+      - /opt/initdb:/docker-entrypoint-initdb.d

@@ -1,0 +1,13 @@
+- name: Launch backend API container
+  docker_container:
+    name: backend-api
+    image: dorianln/tp-devops-simple-api-backend:latest  
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: app-network
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://tp1_postgres:5432/db
+      SPRING_DATASOURCE_USERNAME: usr
+      SPRING_DATASOURCE_PASSWORD: pwd
+    

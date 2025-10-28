@@ -1,0 +1,11 @@
+- name: Launch HTTPD container
+  docker_container:
+    name: httpd
+    image: dorianln/tp-devops-simple-api-httpd:latest  
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: app-network
+    ports:
+      - "80:80"
+    
