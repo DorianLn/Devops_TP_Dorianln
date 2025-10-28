@@ -1,6 +1,6 @@
 - name: Copy SQL init files
   copy:
-    src: /mnt/d/5a/devops/docker.labs/beginner/TP1/init-sql/
+    src: init-sql/
     dest: /opt/initdb/
     mode: '0644'
 
