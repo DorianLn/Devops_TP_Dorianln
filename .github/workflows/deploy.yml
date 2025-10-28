@@ -2,7 +2,7 @@ name: Continuous Deployment
 
 on:
   workflow_run:
-    workflows: ["Build and Push Docker Images"]
+    workflows: ["CI devops 2025"]
     types:
       - completed
 
